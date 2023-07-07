@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>banner</title>
+
+
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+
+  <link rel="stylesheet" th:href="@{/css/boostrap.css}">
+<!--  <link rel="stylesheet" th:href="@{/js/script.js}">-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<body>
+<!-- Start Header Area -->
+<div th:insert="/header::header" th:object="${userlogin}"></div>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+
+<section class="h-100 h-custom" style="background-color: #eee; margin-top: 70px">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <div class="col-lg-8">
+                <div class="p-5">
+                  <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                    <h3 class="mb-0 text-muted">3 items</h3>
+                  </div>
+                  <hr class="my-4">
+                  <form  action="/cartController/update" method="post" th:each="cart : ${listCart}">
+                    <div  class="row mb-4 d-flex justify-content-between align-items-center">
+
+                      <input th:value="${cart.id}" name="cdId" hidden="hidden"/>
+                    <div class="col-md-2 col-lg-2 col-xl-2">
+                      <img th:src="'/image/'+${cart.urlImageP}"
+                           class="img-fluid rounded-3" th:alt="${cart.name}">
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <h3 class="text-black mb-0" th:text="${cart.name}"></h3>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                      <button class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <input id="form1" min="0" name="quantity" th:value="${cart.quantity}" type="number"
+                             class="form-control form-control-sm" />
+                      <button class="btn btn-link px-2"
+                              onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 offset-lg-1">
+                      <h3 class="mb-0" th:text="${cart.price}">€</h3>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                      <a  href=""><button style="background-color: #fff" type="submit"><i  class="bi bi-arrow-up-square fa-3x"></i></button></a>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                      <a th:href="|/cartController/delete/${cart.id}|" class="text-muted" onclick=" return confirm('Bạn có chắc chắn muốn xóa thằng này không  ?')" ><i  class="bi bi-trash3 fa-3x"></i></a>
+                    </div>
+                    <hr class="my-4">
+                    <h4 class="text-uppercase">items <span th:text="${cart.quantity} " th:value="${cart.quantity}"></span></h4>
+                    <h4 >€. <span th:text="${cart.price * cart.quantity}"></span> </h4>
+                  </div>
+                  </form>
+
+
+                  <div class="pt-5">
+                    <h3 class="mb-0"><a th:href="@{/cartController/backProduct}" class="text-body"><i
+                            class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 bg-grey">
+                <div class="p-5">
+                  <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                  <hr class="my-4">
+
+<!--                  <div class="d-flex justify-content-between mb-4"  th:each="c: ${listCart}">-->
+<!--                    <h3 class="text-uppercase" th:text="${c.quantity}"><span>Item</span></h3>-->
+<!--                  </div>-->
+
+                  <h3 class="text-uppercase mb-3">Shipping</h3>
+
+                  <div class="mb-4 pb-2">
+                    <select class="select">
+                      <option value="1">Standard-Delivery- €5.00</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                      <option value="4">Four</option>
+                    </select>
+                  </div>
+
+                  <h5 class="text-uppercase mb-3">Give code</h5>
+
+                  <div class="mb-5">
+                    <div class="form-outline">
+                      <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
+                      <label class="form-label" for="form3Examplea2">Enter your code</label>
+                    </div>
+                  </div>
+
+                  <hr class="my-4">
+                  <button type="button" class="btn btn-dark btn-block btn-lg"
+                          data-mdb-ripple-color="dark"  data-bs-toggle="modal" data-bs-target="#exampleModal"  th:text="' € '+${total} + ' Check Out'"></button>
+                  <form action="/orderController/create" method="post">
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <div>
+                              <label class="text_label">Phone Number : </label>
+                              <input class="text_label" type="text" name="phone_number">
+                            </div>
+                            <div>
+                              <label class="text_label">Address : </label>
+                              <input class="text_label" type="text" name="address">
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" onclick="return confirm('Bạn đã đặt hàng thành công, đơn hàng sẽ đến trong vài ngày tới ')">Create order</button>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer th:fragment="footer" class="foot section_gap" >
+  <div class="container" >
+    <div class="row">
+      <div class="col-lg-3  col-md-6 col-sm-6">
+        <div class="single-footer-widget">
+          <h6>About Us</h6>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore
+            magna aliqua.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4  col-md-6 col-sm-6">
+        <div class="single-footer-widget">
+          <h6>Newsletter</h6>
+          <p>Stay update with our latest</p>
+          <div class="" id="mc_embed_signup">
+
+            <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
+                  method="get" class="form-inline">
+
+              <div class="d-flex flex-row">
+
+                <input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+                       required="" type="email">
+
+                <button class=" btn btn-success"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+
+
+                <!-- <div class="col-lg-4 col-md-4">
+                            <button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+                        </div>  -->
+              </div>
+              <div class="info"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3  col-md-6 col-sm-6">
+        <div class="single-footer-widget mail-chimp">
+          <h6 class="mb-20">Instragram Feed</h6>
+          <ul class="instafeed d-flex flex-wrap">
+            <li><img src="img/i1.jpg" alt=""></li>
+            <li><img src="img/i2.jpg" alt=""></li>
+            <li><img src="img/i3.jpg" alt=""></li>
+            <li><img src="img/i4.jpg" alt=""></li>
+            <li><img src="img/i5.jpg" alt=""></li>
+            <li><img src="img/i6.jpg" alt=""></li>
+            <li><img src="img/i7.jpg" alt=""></li>
+            <li><img src="img/i8.jpg" alt=""></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-6 col-sm-6">
+        <div class="single-footer-widget">
+          <h6>Follow Us</h6>
+          <p>Let us be social</p>
+          <div class="footer-social d-flex align-items-center">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-dribbble"></i></a>
+            <a href="#"><i class="fa fa-behance"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
+      <p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+      </p>
+    </div>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

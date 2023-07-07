@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ADMIN</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/catalog.css}">
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <!-- CSS Files -->
+
+
+</head>
+<body>
+
+<div th:fragment="catalog" class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar">
+        <div class="p-4 pt-5">
+            <!--      <a href="#" class="img logo rounded-circle mb-5" style="background-image: url();"></a>-->
+            <ul class="list-unstyled components mb-5">
+                <li><img style="border-radius: 50%" width="200px" height="200px" th:src="@{/image/tanjiro.jpg}"></li>
+                <li class="active">
+                    <a href="/adminController/admin" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Material-dashboard</a>
+                </li>
+                <li>
+                    <a href="/catalogController/catalog">Catalog Manager</a>
+                </li>
+                <li>
+                    <a href="/productController/getAll" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Product Manager</a>
+
+                </li>
+                <li>
+                    <a href="/getAll">User Manager </a>
+                </li>
+                <li>
+                    <a href="/cartController/order">Order Manager</a>
+                </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+            </ul>
+
+            <div class="footer">
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- Page Content  -->
+
+    <div id="content" class="p-4 p-md-5">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                    <i class="fa fa-bars"></i>
+                    <span class="sr-only">Toggle Menu</span>
+                </button>
+                <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Procduct Manager</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Catalog Manager</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">User Manager</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div>
+            <a href="/catalogController/add"><button class="btn btn-success" >
+                Create Catalog
+            </button></a>
+        </div>
+        <div class="table_form " >
+            <table class="table_content table" width="100%" border="1" cellspacing="0" cellpadding="5">
+                <thead class="thead-dark">
+                <tr>
+                    <th width="5%">ID</th>
+                    <th width="20%">NAME</th>
+                    <th width="20%" colspan="2">ACTION</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${listCatalog}">
+                    <td th:text="${c.getIdC()}"></td>
+                    <td th:text="${c.getNameC()}"></td>
+                    <td><a th:href="@{|/catalogController/edit?id=${c.idC}|}"><button class="btn btn-warning" >Edit</button></a></td>
+                    <td><a th:href="@{|/catalogController/delete?id=${c.idC}|}"><button onclick=" return confirm('Không thể xóa vì danh mục đang chứa khóa ràng buộc   ?') " class="btn btn-danger">Delete</button></a></td>
+
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<script th:src="@{/js/core/popper.min.js}"></script>
+<script th:src="@{js/core/bootstrap.min.js}"></script>
+<script th:src="@{/js/material-dashboard.min.js}"></script>
+</body>
+</html>
